@@ -24,6 +24,7 @@ const Dictaphone = ({
 
   return (
     <div>
+      <h1> Open Story</h1>
       <button onClick ={startListening}>Start</button>
       <button onClick ={stopListening}>Stop</button>
       <button onClick={resetTranscript}>Reset</button>
