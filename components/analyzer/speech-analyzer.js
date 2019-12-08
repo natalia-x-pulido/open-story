@@ -1,5 +1,7 @@
 // var analyzeMe;
 var totalWords
+var wpm;
+let cheer;
 class SpeechAnalyzer extends React.Component {
 	
 	componentDidMount() {
@@ -15,32 +17,37 @@ class SpeechAnalyzer extends React.Component {
 		totalWords = this. countWords(this.props.transcript);
 		
 		// Speaking rate (wpm) = total words / number of minutes
-		var wpm = totalWords /0.25;
-		return wpm;
+		var wpmhere = totalWords /0.50;
+		return wpmhere;
 	}
 
 	results = () => {
-		let wpm = this.calculateWpm();
+		wpm = this.calculateWpm();
 		
 		var yourResult = "";
 		
 		if (wpm <= 80){
-			yourResult = "Your speaking rate is " + wpm + " .You should speed up a little to improve your comprehension.";
+			cheer = "Speed up!"
+			yourResult = "Your timing was a bit slow!";
 		}
-		else if ( wpm >= 80 && wpm <= 100){
-			yourResult = "Your speaking rate is " + wpm + " .You're speaking rate is PERFECT! KEEP UP THE GREAT WORK!";
+		else if ( wpm >= 80 && wpm <= 120){
+			cheer= "Awesome Job!"
+			yourResult = "Your timing was perfect!";
 		}
 		else if (  wpm > 120){
-			yourResult = "Your speaking rate is " + wpm + " .You are speaking too fast! Try to slow down";
+			cheer = "Slow down!"
+			yourResult = "Your timing was too fast!";
 		}
-		
 		return yourResult;
 	}
  
 	render(){
 		return(
 			<div>
-				<h1> {this.results()}</h1>
+				<h1 className = "cheer"> {cheer} </h1>
+				<h1 className = "resultsWPM"> {wpm} </h1>
+				<h3 className = "explanation"> {this.results()}</h3>
+
 			</div>
 		)
 	}

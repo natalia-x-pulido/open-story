@@ -32,7 +32,6 @@ class Timer extends React.Component {
 		return (
 			<div>
 				<button  className = "startTimerRed">{this.state.seconds}</button>
-				<h1>Time remaining {this.state.seconds}</h1>
 			</div>
 		);
 	}

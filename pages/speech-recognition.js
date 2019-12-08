@@ -104,6 +104,15 @@ class Dictaphone extends Component {
       });
     }, 21000);
 
+    setTimeout( () => {
+      this.setState( {
+        switchFirstScreen: 6,
+        startTimer: false,
+        startAnalyze: true
+      });
+    }, 30000);
+
+     
   }
 
   render() {
@@ -119,9 +128,15 @@ class Dictaphone extends Component {
       return null;
     }
 
+    if( this.state.startTimer){
+      setTimeout( () => {
+        stopListening()
+      }, 30000);
+     }
     return (
       <div>
-        {!this.state.startTimer && <img className = "background-img" src ='../static/screens/iniCo.png'/>}
+        {!this.state.startTimer &&  this.state.switchFirstScreen === 0 && <img className = "background-img" src ='../static/screens/iniCo.png'/>}
+
          <button
           onClick={() => {
             startListening(), this.handleStartTimer(), this.switchSeparateScreen();
@@ -135,10 +150,12 @@ class Dictaphone extends Component {
         {this.state.startTimer && this.state.switchFirstScreen === 2 && <img className = "background-img" src ='../static/screens/4thScreen.png'/>}
         {this.state.startTimer && this.state.switchFirstScreen === 3 && <img className = "background-img" src ='../static/screens/5thScreen.png'/>}
         {this.state.startTimer && this.state.switchFirstScreen === 4 && <img className = "background-img" src ='../static/screens/6thScreen.png'/>}
+        {!this.state.startTimer && this.state.switchFirstScreen === 6 && <img className = "background-img" src ='../static/screens/8thScreen.png'/>}
+
         {this.state.startTimer && <Timer resetTimer={this.state.resetTimer} timerDoneCallback= {this.timerDoneCallback} />}
         <span className = "transcript-paragraph">{transcript}</span>
        
-        <button
+        {/*<button
           onClick={() => {
             stopListening(), this.handleStopTimer();
           }}
@@ -152,6 +169,7 @@ class Dictaphone extends Component {
         >
           Reset
         </button>
+      */}
         {this.state.startAnalyze && <SpeechAnalyzer transcript={transcript} />}
       </div>
     );
