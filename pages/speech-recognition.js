@@ -3,7 +3,9 @@ import PropTypes from "prop-types";
 import SpeechRecognition from "react-speech-recognition";
 import Timer from "../components/timer/timer";
 import SpeechAnalyzer from "../components/analyzer/speech-analyzer";
+import "../style/speech-rec.scss";
 
+// import AudioRecorder from "../components/audio-recorder/audio-recorder";
 const propTypes = {
   // Props injected by SpeechRecognition
   transcript: PropTypes.string,
@@ -14,36 +16,94 @@ const propTypes = {
 };
 
 class Dictaphone extends Component {
-  
-  state = 
-  {
+  state = {
     startTimer: false,
     resetTimer: false,
-    startAnalyze: false
-  }
+    startAnalyze: false,
+    firstTime: 'START',
+    stopRecogonizer: true,
+    switchFirstScreen:0
+  };
 
   handleStartTimer = () => {
-    this.setState ({
-      startTimer: true
+    
+    this.setState({
+      // firsTime: '',
+      startTimer: true,
+      startAnalyze: false
     });
-  }
+  };
 
   handleStopTimer = () => {
-    this.setState ({
-      startTimer: false
-    });
-  }
-
-  handleResetTimer = () => {
-    this.setState ({
-      resetTimer: true
-    });
-  }
-
-  handleStartAnalyze = () => {
-     this.setState ({
+    this.setState({
+      startTimer: false,
       startAnalyze: true
     });
+  };
+
+  handleResetTimer = () => {
+    this.setState({
+      resetTimer: true
+    });
+  };
+
+  timerDoneCallback = (startTimer) =>{
+    console.log( startTimer );
+    this.setState({
+      startTimer: startTimer
+    });
+  }
+  onData(recordedBlob) {
+    console.log("chunk of real-time data is: ", recordedBlob);
+  }
+
+  onStop(recordedBlob) {
+    console.log("recordedBlob is: ", recordedBlob);
+  }
+
+  componentDidMount() {
+    this.myInterval = setInterval(() => {
+      if (this.state.firstTime === 0) {
+        clearInterval(this.myInterval);
+        
+        this.setState({
+          stopRecogonizer:false
+        }, () => this.props.timerDoneCallback(this.state.stopRecogonizer));
+        
+      } else {
+        this.setState(({ seconds }) => ({
+          seconds: seconds - 1
+        }));
+      }
+    }, 1000)
+  }
+
+  switchSeparateScreen (){
+
+    setTimeout( () => {
+      this.setState( {
+        switchFirstScreen: 1
+      });
+    }, 2000);
+
+    setTimeout( () => {
+      this.setState( {
+        switchFirstScreen: 2
+      });
+    }, 7000);
+
+    setTimeout( () => {
+      this.setState( {
+        switchFirstScreen: 3
+      });
+    }, 14000);
+
+    setTimeout( () => {
+      this.setState( {
+        switchFirstScreen: 4
+      });
+    }, 21000);
+
   }
 
   render() {
@@ -61,46 +121,46 @@ class Dictaphone extends Component {
 
     return (
       <div>
-        <h1> Open Story</h1>
-        {this.state.startTimer && <Timer resetTimer= {this.state.resetTimer} />}
-        <button onClick={() => {startListening(), this.handleStartTimer()}}>Start</button>
-        <button onClick={() => {stopListening(), this.handleStopTimer(), this.handleStartAnalyze()}}>Stop</button>
-        <button onClick={() => {resetTranscript(), this.handleResetTimer()}}>Reset</button>
-        {this.state.startAnalyze && <SpeechAnalyzer transcript= {this.transcript} />}
-        <span>{transcript}</span>
+        {!this.state.startTimer && <img className = "background-img" src ='../static/screens/iniCo.png'/>}
+         <button
+          onClick={() => {
+            startListening(), this.handleStartTimer(), this.switchSeparateScreen();
+          }}
+          className = "startTimer"
+        >
+          {this.state.firstTime}
+        </button>
+        {this.state.startTimer && this.state.switchFirstScreen === 0 && <img className = "background-img" src ='../static/screens/2ndScreen.png'/>}
+        {this.state.startTimer && this.state.switchFirstScreen === 1 && <img className = "background-img" src ='../static/screens/3rdScreen.png'/>}
+        {this.state.startTimer && this.state.switchFirstScreen === 2 && <img className = "background-img" src ='../static/screens/4thScreen.png'/>}
+        {this.state.startTimer && this.state.switchFirstScreen === 3 && <img className = "background-img" src ='../static/screens/5thScreen.png'/>}
+        {this.state.startTimer && this.state.switchFirstScreen === 4 && <img className = "background-img" src ='../static/screens/6thScreen.png'/>}
+        {this.state.startTimer && <Timer resetTimer={this.state.resetTimer} timerDoneCallback= {this.timerDoneCallback} />}
+        <span className = "transcript-paragraph">{transcript}</span>
+       
+        <button
+          onClick={() => {
+            stopListening(), this.handleStopTimer();
+          }}
+        >
+          Stop
+        </button>
+        <button
+          onClick={() => {
+            resetTranscript(), this.handleResetTimer();
+          }}
+        >
+          Reset
+        </button>
+        {this.state.startAnalyze && <SpeechAnalyzer transcript={transcript} />}
       </div>
     );
   }
 }
 
-// const Dictaphone = ({
-//   transcript,
-//   resetTranscript,
-//   startListening,
-//   stopListening,
-//   browserSupportsSpeechRecognition
-// }) => {
-//   if (!browserSupportsSpeechRecognition) {
-//     return null;
-//   }
-
-//   return (
-//     <div>
-//       <h1> Open Story</h1>
-//       <Timer />
-//       <button onClick={startListening}>Start</button>
-//       <button onClick={stopListening}>Stop</button>
-//       <button onClick={resetTranscript}>Reset</button>
-//       <span>{transcript}</span>
-//     </div>
-//   );
-// };
-
 const options = {
   autoStart: false,
-  continuous: false
+  continuous: true
 };
-
-// Dictaphone.propTypes = propTypes;
 
 export default SpeechRecognition(options)(Dictaphone);
