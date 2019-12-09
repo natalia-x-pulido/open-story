@@ -8,9 +8,22 @@
     "start": "next start"
   },
   "dependencies": {
+    "@cleandersonlobo/react-mic": "^1.1.1",
+    "@zeit/next-sass": "^1.0.1",
+    "flesch-kincaid": "^1.0.4",
+    "mic-recorder-to-mp3": "^2.2.1",
     "next": "9.1.4",
     "react": "16.12.0",
+    "react-audio-analyser": "^0.2.6",
     "react-dom": "16.12.0",
-    "react-speech-recognition": "^2.0.4"
+    "react-speech-recognition": "^2.0.4",
+    "videojs-record": "^3.8.0"
+  },
+  "devDependencies": {
+    "css-loader": "^3.2.1",
+    "node-sass": "^4.13.0",
+    "sass-loader": "^8.0.0",
+    "ts-loader": "^6.2.1",
+    "webpack": "^4.41.2"
   }
 }
