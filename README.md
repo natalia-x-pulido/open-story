@@ -2,21 +2,10 @@
 
 Open Story was a project developed in MIT Hacking Arts 2019. The idea was an application that helps improve public speaking skills through storytelling. Users would improve their skills through daily interactive games. This is the Proof of concept we presented, involving slideshow karaoke, a fun mini game where the user creates a story based on the images they are showen and get feedback based on their speech rate. 
 
-<<<<<<< HEAD
-Installation:
-# Installation:
-
-run
-npm install 
-run npm install 
-
-Then navigate on google chrome to localhost:3000/speech-recognition
-=======
 # Installation:
 
 run npm install 
 
->>>>>>> 2aeb74d2729c8c81e2918305ed110e26815b62d8
 Then navigate onto localhost:3000/speech-recognition in your web browser.
 
 # Technology used 
@@ -31,5 +20,4 @@ When the user presses the start button, the speech recognizer is started. As the
 
 We calculated this rate based on the average speaking rate values suggested on this site https://virtualspeech.com/blog/average-speaking-rate-words-per-minute#:~:text=According%20to%20the%20National%20Center,podcasters%2C%20the%20wpm%20is%20higher.
 
-demo: 
 
